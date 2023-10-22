@@ -17,4 +17,5 @@ ab = search.GPSProblem('A', 'B'
 
 
 # Busquedad Metodo Branch and Bound
-# print(search.method_branch_and_bound(ab).path())
+print(search.method_branch_and_bound(ab).path())
+# [<Node B>, <Node P>, <Node R>, <Node S>, <Node A>]

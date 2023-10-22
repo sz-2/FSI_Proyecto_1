@@ -545,7 +545,7 @@ class FIFOQueue(Queue):
 
 
 # My fringe()
-def Fringe():
+class Fringe():
     "from less to high cost"
 
     def __init__(self):
@@ -554,11 +554,11 @@ def Fringe():
 
     def append(self, item):
         self.A.append(item)
-        sorted(self.A, key=lambda node: node.path_cost)
 
     def extend(self, items):
         self.A.extend(items)
-        self.A
+        self.A = sorted(self.A, key=lambda node: node.path_cost, reverse=True)
+
 
     def pop(self):
         return self.A.pop()
