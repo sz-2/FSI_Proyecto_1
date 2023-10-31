@@ -1,3 +1,5 @@
+import math
+import search
 
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
@@ -546,22 +548,56 @@ class FIFOQueue(Queue):
 
 # My fringe()
 class Fringe():
-    "from less to high cost"
+    "ordering list based on less to high cost"
 
     def __init__(self):
-        self.A = []
+        self.queue = []
         self.start = 0
+        self.visited = 0
+        self.generated = 0
 
     def append(self, item):
-        self.A.append(item)
+        self.queue.append(item)
 
     def extend(self, items):
-        self.A.extend(items)
-        self.A = sorted(self.A, key=lambda node: node.path_cost, reverse=True)
+        self.generated += len(items)
+        print("Generate:", self.generated)
+        self.queue.extend(items)
+        self.queue= sorted(self.queue, key=lambda node: node.getPathCost(), reverse=True)
 
 
     def pop(self):
-        return self.A.pop()
+        self.visited += 1
+        print("Visited:", self.visited)
+        return self.queue.pop()
+
+
+class FringeHeuristic():
+    "ordering the list based on path_cost plus heuristic"
+
+    def __init__(self, problem):
+        self.queue = []
+        self.start = 0
+        self.problem = problem
+        self.visited = 0
+        self.generated = 0
+
+    def append(self, item):
+        self.queue.append(item)
+        self.problem.h(item)
+
+    def extend(self, items):
+        self.generated += len(items)
+        print("Generate:", self.generated)
+        self.queue.extend(items)
+        self.queue= sorted(self.queue, key=lambda node: node.getPathCost()+self.problem.h(node), reverse=True)
+
+    def pop(self):
+        self.visited += 1
+        print("Visited:", self.visited, self.queue[-1])
+        return self.queue.pop()
+
+
 
 ## Fig: The idea is we can define things like Fig[3,10] later.
 ## Alas, it is Fig[3,10] not Fig[3.10], because that would be the same as Fig[3.1]

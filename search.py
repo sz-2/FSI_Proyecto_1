@@ -69,7 +69,6 @@ class Node:
         """Create a search tree Node, derived from a parent by an action."""
         update(self, state=state, parent=parent, action=action,
                path_cost=path_cost, depth=0)
-        self.path_cost = path_cost # Modificación para obtener el pathCost
         if parent:
             self.depth = parent.depth + 1
 
@@ -126,6 +125,10 @@ def depth_first_graph_search(problem):
 
 def method_branch_and_bound(problem):
     return graph_search(problem, Fringe())
+
+
+def method_branch_and_bound_Heuristic(problem):
+    return graph_search(problem, FringeHeuristic(problem))
 
 
 
