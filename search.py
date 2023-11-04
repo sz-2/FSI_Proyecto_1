@@ -124,7 +124,7 @@ def depth_first_graph_search(problem):
 
 
 def method_branch_and_bound(problem):
-    return graph_search(problem, Fringe())
+    return graph_search(problem, Fringe(problem))
 
 
 def method_branch_and_bound_Heuristic(problem):

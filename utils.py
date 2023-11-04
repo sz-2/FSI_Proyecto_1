@@ -546,30 +546,39 @@ class FIFOQueue(Queue):
         return e
 
 
+
 # My fringe()
 class Fringe():
     "ordering list based on less to high cost"
 
-    def __init__(self):
+    def __init__(self, problem):
         self.queue = []
         self.start = 0
-        self.visited = 0
-        self.generated = 0
+        self.problem = problem
+        self.visited = set()
+        self.generated = set()
 
     def append(self, item):
         self.queue.append(item)
+        self.generated.add(item.state)
 
     def extend(self, items):
-        self.generated += len(items)
-        print("Generate:", self.generated)
+        for node in items:
+            self.generated.add(node.state)
         self.queue.extend(items)
         self.queue= sorted(self.queue, key=lambda node: node.getPathCost(), reverse=True)
 
 
     def pop(self):
-        self.visited += 1
-        print("Visited:", self.visited)
-        return self.queue.pop()
+        node = self.queue.pop()
+        self.visited.add(node.state)
+        if self.problem.goal_test(node.state):
+            print("generados: ", len(self.generated))
+            print("visitados: ", len(self.visited))
+        return node
+
+
+
 
 
 class FringeHeuristic():
@@ -579,23 +588,26 @@ class FringeHeuristic():
         self.queue = []
         self.start = 0
         self.problem = problem
-        self.visited = 0
-        self.generated = 0
+        self.visited = set()
+        self.generated = set()
 
     def append(self, item):
         self.queue.append(item)
-        self.problem.h(item)
+        self.generated.add(item.state)
 
     def extend(self, items):
-        self.generated += len(items)
-        print("Generate:", self.generated)
         self.queue.extend(items)
         self.queue= sorted(self.queue, key=lambda node: node.getPathCost()+self.problem.h(node), reverse=True)
+        for node in items:
+            self.generated.add(node.state)
 
     def pop(self):
-        self.visited += 1
-        print("Visited:", self.visited, self.queue[-1])
-        return self.queue.pop()
+        node = self.queue.pop()
+        self.visited.add(node.state)
+        if self.problem.goal_test(node.state):
+            print("generados: ", len(self.generated))
+            print("visitados: ", len(self.visited))
+        return node
 
 
 
